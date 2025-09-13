@@ -13,23 +13,41 @@
 <body class="text-justify">
 
   <h1>Digraph GNN Benchmarks</h1>
-  <p class="author">Viraj Shitole — September 2025</p>
+  <p class="author">Viraj Shitole — December 2024</p>
 
   <div class="abstract">
     <h2>Abstract</h2>
     <p>
-      This project benchmarks directed graph datasets on various graph neural networks
-      (GNNs). The goal is to evaluate how different architectures handle structural
-      asymmetry, flow information, and directionality in real and synthetic graphs.
+      Graph neural networks (GNNs) have achieved strong performance in learning
+      chemical structures, social networks, and citation graphs. However, these graphs are undirected and
+      their effectiveness on directed graph datasets remains largely unexplored.
+      In this project, we benchmark multiple GNN architectures on directed graph 
+      datasets, including source code graphs, machine learning kernel graphs, and execution traces. 
+      These datasets contain rich node features, directed edges, and graph-level labels capturing runtime, 
+      edge-device optimizations, or latency. By evaluating GNN performance on these benchmarks, we 
+      quantify their ability to capture directed dependencies and structural asymmetries in real-world 
+      directed graphs for graph-level tasks.
     </p>
   </div>
 
-  <h2>1) Dataset</h2>
-  <p>
-    We consider both synthetic and real-world directed graph datasets. Examples include
-    citation networks, web graphs, and execution trace DAGs. Each dataset contains
-    node features, directed edges, and labels for downstream tasks.
-  </p>
+    <h2>1) Dataset</h2>
+    <p>
+    We focus on the challenging domain of <strong>heterogeneous device mapping (DEVMAP)</strong>. 
+    Given an OpenCL kernel and a choice of two devices (CPU or GPU), the task is to predict 
+    which device provides the best performance. This problem has received significant prior 
+    attention, with approaches using hand-engineered features as well as sequential models.
+    </p>
+
+    <p>
+    We use the dataset provided by <em>Cummins et al., 2020</em>, which contains labeled CPU/GPU 
+    instances for 256 OpenCL kernels sourced from seven benchmark suites. Two CPU/GPU combinations 
+    are included: an Intel Core i7-3820 CPU with an AMD Tahiti 7970 GPU (AMD set), and an Intel 
+    Core i7-3820 CPU with an NVIDIA GTX 970 GPU (NVIDIA set). Each dataset consists of 680 labeled 
+    instances derived from the 256 unique kernels by varying dynamic inputs. The data is represented 
+    as directed attributed graphs capturing program structure and dependencies, making it suitable 
+    for graph neural network evaluation.
+    </p>
+
 
   <h2>2) Types of GNNs</h2>
   <p>
@@ -56,6 +74,17 @@
     Preliminary findings suggest that models explicitly encoding directionality achieve
     stronger performance on tasks such as citation prediction and execution flow analysis.
   </p>
+
+<h2>References</h2>
+<ul>
+  <li>
+    Chris Cummins, Zacharias V. Fisches, Tal Ben-Nun, Torsten Hoefler, Hugh Leather. 
+    <strong>ProGraML: Graph-based Deep Learning for Program Optimization and Analysis.</strong> 
+    arXiv:2003.10536 [cs.LG], 2020. 
+    <a href="https://doi.org/10.48550/arXiv.2003.10536" target="_blank">https://doi.org/10.48550/arXiv.2003.10536</a>
+  </li>
+</ul>
+
 
 </body>
 </html>
