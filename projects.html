@@ -1,90 +1,92 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Digraph GNN Benchmarks</title>
+  <title>Benchmarking GNNs on Directed Graphs</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="Viraj Shitole">
 
   <!-- LaTeX.css stylesheet -->
+
   <link rel="stylesheet" href="https://latex.vercel.app/style.css">
 </head>
 
 <body class="text-justify">
 
-  <h1>Digraph GNN Benchmarks</h1>
-  <p class="author">Viraj Shitole — December 2024</p>
+  <h1>Benchmarking GNNs on Directed Graphs</h1>
+  <p class="author">Viraj Shitole</p>
 
   <div class="abstract">
     <h2>Abstract</h2>
     <p>
-      Graph neural networks (GNNs) have achieved strong performance in learning
-      chemical structures, social networks, and citation graphs. However, these graphs are undirected and
-      their effectiveness on directed graph datasets remains largely unexplored.
-      In this project, we benchmark multiple GNN architectures on directed graph 
-      datasets, including source code graphs, machine learning kernel graphs, and execution traces. 
-      These datasets contain rich node features, directed edges, and graph-level labels capturing runtime, 
-      edge-device optimizations, or latency. By evaluating GNN performance on these benchmarks, we 
-      quantify their ability to capture directed dependencies and structural asymmetries in real-world 
-      directed graphs for graph-level tasks.
+      Graph neural networks (GNNs) have achieved strong performance in learning biological structures, social networks, and citation graphs. However, these graphs are typically undirected, and the effectiveness of GNNs on directed graph datasets remains largely unexplored. In this project, we benchmark multiple GNN architectures on directed graph datasets, specifically source code graphs. We use the OpenCL DevMap dataset, which contains rich node features, directed edges, and graph-level labels capturing edge-device optimizations. By evaluating GNN performance, we quantify their ability to capture directed dependencies and structural asymmetries in real-world directed graphs.
     </p>
   </div>
 
-    <h2>1) Dataset</h2>
-    <p>
-    We focus on the challenging domain of <strong>heterogeneous device mapping (DEVMAP)</strong>. 
-    Given an OpenCL kernel and a choice of two devices (CPU or GPU), the task is to predict 
-    which device provides the best performance. This problem has received significant prior 
-    attention, with approaches using hand-engineered features as well as sequential models.
-    </p>
-
-    <p>
-    We use the dataset provided by <em>Cummins et al., 2020</em>, which contains labeled CPU/GPU 
-    instances for 256 OpenCL kernels sourced from seven benchmark suites. Two CPU/GPU combinations 
-    are included: an Intel Core i7-3820 CPU with an AMD Tahiti 7970 GPU (AMD set), and an Intel 
-    Core i7-3820 CPU with an NVIDIA GTX 970 GPU (NVIDIA set). Each dataset consists of 680 labeled 
-    instances derived from the 256 unique kernels by varying dynamic inputs. The data is represented 
-    as directed attributed graphs capturing program structure and dependencies, making it suitable 
-    for graph neural network evaluation.
-    </p>
-
-
-  <h2>2) Types of GNNs</h2>
+  <h2>1) Dataset</h2>
   <p>
-    Several GNN architectures are benchmarked, including:
+    We use the <strong>OpenCL DevMap dataset</strong>, a heterogeneous Compute Device Mapping dataset:
   </p>
   <ul>
-    <li>Graph Convolutional Networks (GCN)</li>
-    <li>GraphSAGE</li>
-    <li>Graph Attention Networks (GAT)</li>
-    <li>Message Passing Neural Networks (MPNN)</li>
-    <li>Directed-specific models (DiGCN, DGN)</li>
+    <li>Nodes represent lines of code or functions (Average: 845 nodes per graph)</li>
+    <li>Edges represent function calls, data flows, or return calls (Average: 1573 edges per graph)</li>
+    <li>Graph labels are binary: 0 for CPU, 1 for GPU</li>
+    <li>Total of 680 labeled graphs</li>
+    <li>Graphs are directed, reflecting true execution dependencies</li>
   </ul>
 
-  <h2>3) Training</h2>
+  <h2>2) Models</h2>
   <p>
-    Each model is trained with standardized hyperparameters, early stopping, and repeated
-    trials for statistical significance. We track convergence speed, stability across seeds,
-    and memory requirements.
+    We evaluate three popular GNN architectures:
+  </p>
+  <ul>
+    <li><strong>GraphSAGE</strong>: Aggregates information from neighbors using a learnable aggregation function.</li>
+    <li><strong>Graph Isomorphism Network (GIN)</strong>: Uses a sum aggregator with MLP for expressive node updates.</li>
+    <li><strong>Graph Convolutional Network (GCN)</strong>: Propagates normalized neighbor information.</li>
+  </ul>
+  <p>
+    We also implement <strong>bidirectional variants</strong> for all three models, which process edges in both directions to capture reverse dependencies.
+  </p>
+
+  <h2>3) Experimental Setup</h2>
+  <ul>
+    <li>Cross-validation: 10-fold stratified</li>
+    <li>Loss function: Binary cross-entropy with logits</li>
+    <li>Optimizer: Adam</li>
+    <li>Early stopping: Patience of 10 epochs</li>
+    <li>Metrics: F1-score and ROC-AUC</li>
+    <li>Graph handling: Option to treat graphs as undirected by adding reverse edges</li>
+  </ul>
+  <p>
+    Evaluation metrics:
+    <ul>
+      <li>F1-score: harmonic mean of precision and recall</li>
+      <li>ROC-AUC: measures the model’s ability to discriminate between CPU and GPU optimal graphs</li>
+    </ul>
   </p>
 
   <h2>4) Results</h2>
   <p>
-    Results are reported using accuracy, ROC-AUC, F1-score, and training time.
-    Preliminary findings suggest that models explicitly encoding directionality achieve
-    stronger performance on tasks such as citation prediction and execution flow analysis.
+    Results are summarized in the table below (placeholders for values):
   </p>
+  <table>
+    <tr><th>Model</th><th>Direction</th><th>F1 (Val)</th><th>ROC-AUC (Val)</th><th>F1 (Test)</th><th>ROC-AUC (Test)</th></tr>
+    <tr><td>GraphSAGE</td><td>Directed</td><td>X.XX</td><td>X.XX</td><td>X.XX</td><td>X.XX</td></tr>
+    <tr><td>GraphSAGE</td><td>Bidirectional</td><td>X.XX</td><td>X.XX</td><td>X.XX</td><td>X.XX</td></tr>
+    <tr><td>GIN</td><td>Directed</td><td>X.XX</td><td>X.XX</td><td>X.XX</td><td>X.XX</td></tr>
+    <tr><td>GIN</td><td>Bidirectional</td><td>X.XX</td><td>X.XX</td><td>X.XX</td><td>X.XX</td></tr>
+    <tr><td>GCN</td><td>Directed</td><td>X.XX</td><td>X.XX</td><td>X.XX</td><td>X.XX</td></tr>
+    <tr><td>GCN</td><td>Bidirectional</td><td>X.XX</td><td>X.XX</td><td>X.XX</td><td>X.XX</td></tr>
+  </table>
 
-<h2>References</h2>
-<ul>
-  <li>
-    Chris Cummins, Zacharias V. Fisches, Tal Ben-Nun, Torsten Hoefler, Hugh Leather. 
-    <strong>ProGraML: Graph-based Deep Learning for Program Optimization and Analysis.</strong> 
-    arXiv:2003.10536 [cs.LG], 2020. 
-    <a href="https://doi.org/10.48550/arXiv.2003.10536" target="_blank">https://doi.org/10.48550/arXiv.2003.10536</a>
-  </li>
-</ul>
-
+  <h2>5) Discussion</h2>
+  <p>
+    Directed edges contain valuable information for performance prediction in source code graphs. Bidirectional and undirected modeling are useful but may blur asymmetries in some datasets. GraphSAGE’s neighbor aggregation appears more stable than GIN’s MLP-based updates on this dataset.
+  </p>
+  <p>
+    Future work includes exploring attention-based GNNs (e.g., GAT) for edge weighting, extending evaluation to larger heterogeneous code datasets, and investigating node and edge masking strategies to improve generalization.
+  </p>
 
 </body>
 </html>
