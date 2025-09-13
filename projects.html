@@ -1,22 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <title>Viraj Shitole - Projects</title>
-    <link rel="stylesheet" type="text/css" href="stylesheet.css">
-  </head>
+<head>
+  <meta charset="UTF-8">
+  <title>Digraph GNN Benchmarks</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Viraj Shitole">
 
-  <body>
-    <table style="width:100%;max-width:800px;margin:auto;">
-      <tr>
-        <td>
-          <p class="name" style="text-align: center;">Projects</p>
-          <p>
-            Here are some of my research and software projects.  
-            (You can add more text, images, or links here.)
-          </p>
-        </td>
-      </tr>
-    </table>
-  </body>
+  <!-- LaTeX.css stylesheet -->
+  <link rel="stylesheet" href="https://latex.vercel.app/style.css">
+</head>
+
+<body class="text-justify">
+
+  <h1>Digraph GNN Benchmarks</h1>
+  <p class="author">Viraj Shitole — September 2025</p>
+
+  <div class="abstract">
+    <h2>Abstract</h2>
+    <p>
+      This project benchmarks directed graph datasets on various graph neural networks
+      (GNNs). The goal is to evaluate how different architectures handle structural
+      asymmetry, flow information, and directionality in real and synthetic graphs.
+    </p>
+  </div>
+
+  <h2>1) Dataset</h2>
+  <p>
+    We consider both synthetic and real-world directed graph datasets. Examples include
+    citation networks, web graphs, and execution trace DAGs. Each dataset contains
+    node features, directed edges, and labels for downstream tasks.
+  </p>
+
+  <h2>2) Types of GNNs</h2>
+  <p>
+    Several GNN architectures are benchmarked, including:
+  </p>
+  <ul>
+    <li>Graph Convolutional Networks (GCN)</li>
+    <li>GraphSAGE</li>
+    <li>Graph Attention Networks (GAT)</li>
+    <li>Message Passing Neural Networks (MPNN)</li>
+    <li>Directed-specific models (DiGCN, DGN)</li>
+  </ul>
+
+  <h2>3) Training</h2>
+  <p>
+    Each model is trained with standardized hyperparameters, early stopping, and repeated
+    trials for statistical significance. We track convergence speed, stability across seeds,
+    and memory requirements.
+  </p>
+
+  <h2>4) Results</h2>
+  <p>
+    Results are reported using accuracy, ROC-AUC, F1-score, and training time.
+    Preliminary findings suggest that models explicitly encoding directionality achieve
+    stronger performance on tasks such as citation prediction and execution flow analysis.
+  </p>
+
+</body>
 </html>
